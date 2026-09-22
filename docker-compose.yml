@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+
+  adminer:
+    image: adminer
+    container_name: ilia-adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - ilia-network
+    depends_on:
+      - db
+      
+  back:
+    build:
+      context: ./app/back
+    container_name: ilia-back
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: dev_user
+      DB_PASSWORD: dev_password
+      DB_NAME: ilia_db
+    volumes:
+      - ./app/back:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - ilia-network
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    container_name: ilia-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ilia_db
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: dev_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ilia-network
+
+
+networks:
+  ilia-network:
+    driver: bridge
+
+volumes:
+  db_data:

@@ -1,0 +1,136 @@
+{
+  "preguntes": [
+    {
+      "id": 1,
+      "pregunta": "Quina forma i color té el senyal de STOP (R-2)?",
+      "respostes": [
+        "Triangular, blanca amb vora vermella",
+        "Circular, blava amb fletxa blanca",
+        "Octogonal, vermella amb la paraula STOP en blanc",
+        "Quadrada, groga amb vora negra"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Stop.svg"
+    },
+    {
+      "id": 2,
+      "pregunta": "Quin senyal és el que es mostra a la imatge i què obliga a fer?",
+      "respostes": [
+        "Prohibit avançar",
+        "Ceda el pas (R-1): cedir el pas al proper encreuament",
+        "Intersecció amb prioritat de pas",
+        "Direcció obligatòria a la dreta"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Spain_traffic_signal_r1.svg"
+    },
+    {
+      "id": 3,
+      "pregunta": "Què indica aquest senyal circular blanc amb vora vermella i barra horitzontal?",
+      "respostes": [
+        "Velocitat mínima obligatòria",
+        "Prohibit tocar el clàxon",
+        "Final de totes les prohibicions",
+        "Direcció prohibida (entrada prohibida en aquell sentit)"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Spain_traffic_signal_r3.svg"
+    },
+    {
+      "id": 4,
+      "pregunta": "Aquest senyal circular blanc amb dues fletxes vermelles oposades indica...",
+      "respostes": [
+        "Doble sentit de circulació",
+        "Encreuament de vies",
+        "Circulació prohibida en ambdós sentits",
+        "Preferència sobre el sentit contrari"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Spain_traffic_signal_r101.svg"
+    },
+    {
+      "id": 5,
+      "pregunta": "El senyal amb dos cotxes (un vermell i un negre) dins d'un cercle vermell indica...",
+      "respostes": [
+        "Prohibit estacionar",
+        "Avançament prohibit",
+        "Zona d'obres",
+        "Carretera amb doble carril"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Spain_traffic_signal_r305.svg"
+    },
+    {
+      "id": 6,
+      "pregunta": "Quina és la taxa màxima d'alcohol en sang (g/l) permesa per a un conductor novell a Espanya?",
+      "respostes": [
+        "1,0 g/l",
+        "0,8 g/l",
+        "0,5 g/l",
+        "0,3 g/l"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Breathalyzer.jpg"
+    },
+    {
+      "id": 7,
+      "pregunta": "És obligatori portar el cinturó de seguretat cordat als seients del darrere?",
+      "respostes": [
+        "Només en autopista",
+        "No és obligatori mai al darrere",
+        "Sí, sempre que el vehicle en disposi",
+        "Només si hi ha menors"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Seatbelt.svg"
+    },
+    {
+      "id": 8,
+      "pregunta": "Quina distància de seguretat s'ha de mantenir respecte al vehicle del davant?",
+      "respostes": [
+        "No hi ha cap norma específica",
+        "La necessària perquè, si frena, es pugui aturar sense col·lidir",
+        "Sempre un mínim de 100 metres",
+        "Només cal en carretera, no en ciutat"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Singapore_road_sign_-_Informatory_-_Keep_a_safe_distance_from_vehicle_in_front.svg"
+    },
+    {
+      "id": 9,
+      "pregunta": "Quants punts té el permís de conduir d'un conductor novell durant el primer any?",
+      "respostes": [
+        "8 punts",
+        "12 punts",
+        "10 punts",
+        "6 punts"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Man_Driving_Car_Cartoon_Vector.svg"
+    },
+    {
+      "id": 10,
+      "pregunta": "A quina edat mínima es pot obtenir el permís de conduir tipus B a Espanya?",
+      "respostes": [
+        "17 anys",
+        "18 anys",
+        "21 anys",
+        "16 anys"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Driving_Age_--_Global.svg"
+    },
+    {
+      "id": 11,
+      "pregunta": "Què indica un senyal circular blanc amb vora vermella i un número negre a dins (per exemple, 50)?",
+      "respostes": [
+        "Velocitat mínima recomanada",
+        "Velocitat màxima permesa en aquest tram (R-301)",
+        "Distància de seguretat en metres",
+        "Límit de pes del vehicle en tones"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Spain_traffic_signal_r301.svg"
+    },
+    {
+      "id": 12,
+      "pregunta": "Quin significat té el senyal circular blau amb vora vermella i una barra vermella diagonal?",
+      "respostes": [
+        "Parada i estacionament obligatoris",
+        "Zona d'estacionament reservat per a discapacitats",
+        "Estacionament prohibit (R-308)",
+        "Final de la zona blava"
+      ],
+      "imatge": "https://commons.wikimedia.org/wiki/Special:FilePath/Spain_traffic_signal_r308.svg"
+    }
+  ]
+}
