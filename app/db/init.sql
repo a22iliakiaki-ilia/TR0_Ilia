@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS respostas;
 DROP TABLE IF EXISTS preguntas;
 
 CREATE TABLE preguntas (
-    id       INT           NOT NULL,
+    id          INT AUTO_INCREMENT,
     pregunta VARCHAR(500)  NOT NULL,
     imagen   VARCHAR(255)  NOT NULL,
     PRIMARY KEY (id)
@@ -12,7 +12,7 @@ CREATE TABLE preguntas (
 
 
 CREATE TABLE respostas (
-    id          INT           NOT NULL,
+    id          INT AUTO_INCREMENT,
     pregunta_id INT           NOT NULL,
     text        VARCHAR(500)  NOT NULL,
     es_correcta BOOLEAN       NOT NULL DEFAULT FALSE,

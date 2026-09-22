@@ -94,9 +94,152 @@ app.get('/ids', async (req, res) => {
   }
 });
 
-app.post('upload-image', async (req, res) => {
+app.delete('/question/:id', async (req, res) => {
+  const { id } = req.params;
 
-})
+  try {
+    const [result] = await pool.query('DELETE FROM preguntas WHERE id = ?', [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'question not found' });
+    }
+    res.json({ message: 'question deleted successfully' });
+  } catch (err) {
+    console.error('Error en /question/:id:', err.message);
+    res.status(500).json({ error: 'database error' });
+  }
+});
+
+app.post('/question', async (req, res) => {
+  const { pregunta, imagen, respostes } = req.body;
+
+  if (!pregunta || !Array.isArray(respostes) || respostes.length === 0) {
+    return res.status(400).json({ error: 'pregunta and respostes are required' });
+  }
+
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const [result] = await conn.query(
+      'INSERT INTO preguntas (pregunta, imagen) VALUES (?, ?)',
+      [pregunta, imagen || null]
+    );
+    const preguntaId = result.insertId;
+
+    const respostaInserts = respostes.map((text, index) => [preguntaId, text, index]);
+    await conn.query(
+      'INSERT INTO respostas (pregunta_id, `text`, ordre) VALUES ?',
+      [respostaInserts]
+    );
+
+    await conn.commit();
+    res.status(201).json({ message: 'question created successfully', preguntaId });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Error en /question:', err.message);
+    res.status(500).json({ error: 'database error' });
+  } finally {
+    conn.release();
+  }
+});
+
+app.put('/question/:id', async (req, res) => {
+  const { id } = req.params;
+  const { pregunta, imagen, respostes } = req.body;
+
+  if (!pregunta || !Array.isArray(respostes) || respostes.length === 0) {
+    return res.status(400).json({ error: 'pregunta and respostes are required' });
+  }
+
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const [result] = await conn.query(
+      'UPDATE preguntas SET pregunta = ?, imagen = ? WHERE id = ?',
+      [pregunta, imagen || null, id]
+    );
+    if (result.affectedRows === 0) {
+      await conn.rollback();
+      return res.status(404).json({ error: 'question not found' });
+    }
+
+    await conn.query('DELETE FROM respostas WHERE pregunta_id = ?', [id]);
+
+    const respostaInserts = respostes.map((text, index) => [id, text, index]);
+    await conn.query(
+      'INSERT INTO respostas (pregunta_id, `text`, ordre) VALUES ?',
+      [respostaInserts]
+    );
+
+    await conn.commit();
+    res.json({ message: 'question updated successfully' });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Error en /question/:id:', err.message);
+    res.status(500).json({ error: 'database error' });
+  } finally {
+    conn.release();
+  }
+});
+
+app.get('/question/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [preguntas] = await pool.query(
+      'SELECT id, pregunta, imagen FROM preguntas WHERE id = ?',
+      [id]
+    );
+    if (preguntas.length === 0) {
+      return res.status(404).json({ error: 'question not found' });
+    }
+
+    const pregunta = preguntas[0];
+    const [respostas] = await pool.query(
+      'SELECT `text` FROM respostas WHERE pregunta_id = ? ORDER BY ordre',
+      [id]
+    );
+
+    res.json({
+      id: pregunta.id,
+      pregunta: pregunta.pregunta,
+      imatge: pregunta.imagen,
+      respostes: respostas.map((r) => r.text),
+    });
+  } catch (err) {
+    console.error('Error en /question/:id:', err.message);
+    res.status(500).json({ error: 'database error' });
+  }
+});
+
+app.get('/questions', async (req, res) => {
+  try {
+    const [preguntas] = await pool.query(
+      'SELECT id, pregunta, imagen FROM preguntas'
+    );
+
+    const questions = await Promise.all(
+      preguntas.map(async (pregunta) => {
+        const [respostas] = await pool.query(
+          'SELECT `text` FROM respostas WHERE pregunta_id = ? ORDER BY ordre',
+          [pregunta.id]
+        );
+        return {
+          id: pregunta.id,
+          pregunta: pregunta.pregunta,
+          imatge: pregunta.imagen,
+          respostes: respostas.map((r) => r.text),
+        };
+      })
+    );
+
+    res.json(questions);
+  } catch (err) {
+    console.error('Error en /questions:', err.message);
+    res.status(500).json({ error: 'database error' });
+  }
+});
 
 app.post('/check-correctes', async (req, res) => {
   const { session_id, user_respost } = req.body || {};
