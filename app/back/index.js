@@ -3,11 +3,39 @@ const path = require('path');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const { randomUUID } = require('crypto');
+const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 const port = process.env.PORT || 4000;
 const QUESTIONS_PER_QUIZ = 10;
 const SESSION_TTL_MS = 60 * 60 * 1000; 
+
+
+
+const uploadDir = path.join(__dirname, 'public', 'img');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const uniqueName = `image_${Date.now()}${ext}`;
+    cb(null, uniqueName);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, 
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed'));
+    }
+    cb(null, true);
+  }
+});
+
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
@@ -109,12 +137,30 @@ app.delete('/question/:id', async (req, res) => {
   }
 });
 
-app.post('/question', async (req, res) => {
-  const { pregunta, imagen, respostes } = req.body;
+app.post('/question', upload.single('imagen'), async (req, res) => {
+  const { pregunta, respostes, correctOption } = req.body;
 
-  if (!pregunta || !Array.isArray(respostes) || respostes.length === 0) {
+  if (!req.file) {
+    return res.status(400).json({ error: 'imagen is required' });
+  }
+
+  let respostesArr;
+  try {
+    respostesArr = JSON.parse(respostes);
+  } catch {
+    return res.status(400).json({ error: 'respostes must be valid JSON array' });
+  }
+
+  if (!pregunta || !Array.isArray(respostesArr) || respostesArr.length === 0) {
     return res.status(400).json({ error: 'pregunta and respostes are required' });
   }
+
+  const correctIndex = parseInt(correctOption, 10) - 1;
+  if (isNaN(correctIndex) || correctIndex < 0 || correctIndex >= respostesArr.length) {
+    return res.status(400).json({ error: 'correctOption must be between 1 and ' + respostesArr.length });
+  }
+
+  const imagenPath = `/img/${req.file.filename}`;
 
   const conn = await pool.getConnection();
   try {
@@ -122,18 +168,24 @@ app.post('/question', async (req, res) => {
 
     const [result] = await conn.query(
       'INSERT INTO preguntas (pregunta, imagen) VALUES (?, ?)',
-      [pregunta, imagen || null]
+      [pregunta, imagenPath]
     );
     const preguntaId = result.insertId;
 
-    const respostaInserts = respostes.map((text, index) => [preguntaId, text, index]);
+    const respostaInserts = respostesArr.map((text, index) => [
+      preguntaId,
+      text,
+      index === correctIndex,
+      index
+    ]);
+
     await conn.query(
-      'INSERT INTO respostas (pregunta_id, `text`, ordre) VALUES ?',
+      'INSERT INTO respostas (pregunta_id, `text`, es_correcta, ordre) VALUES ?',
       [respostaInserts]
     );
 
     await conn.commit();
-    res.status(201).json({ message: 'question created successfully', preguntaId });
+    res.status(201).json({ message: 'question created successfully', preguntaId, imagen: imagenPath });
   } catch (err) {
     await conn.rollback();
     console.error('Error en /question:', err.message);

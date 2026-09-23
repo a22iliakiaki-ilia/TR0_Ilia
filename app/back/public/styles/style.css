@@ -98,6 +98,19 @@ h1 {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.idInput {
+  width: 100%;
+  padding: 13px 14px;
+  margin: 4px 0 22px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
 #user:focus {
   outline: none;
   border-color: var(--accent);
@@ -223,6 +236,30 @@ h1 {
 }
 
 .next-btn:active {
+  transform: scale(0.97);
+}
+
+.send-btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 13px 20px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.send-btn:hover {
+  background: #FFC61A;
+}
+
+.send-btn:active {
   transform: scale(0.97);
 }
 

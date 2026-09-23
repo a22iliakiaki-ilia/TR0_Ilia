@@ -4,6 +4,18 @@ function getName() {
     return localStorage.getItem("userName");
 }
 
+function greetUser() {
+    const name = getName();
+    const displayElement = document.getElementById("userNameDisplay");
+    if (name && displayElement) {
+        displayElement.textContent = `Welcome, ${name}!`;
+    }else if (displayElement) {
+        displayElement.textContent = "Welcome!";
+    }
+}
+
+greetUser();
+
 function setUserName() {
     const name = document.getElementById("nameInput").value.trim();
     if (!name) return; 

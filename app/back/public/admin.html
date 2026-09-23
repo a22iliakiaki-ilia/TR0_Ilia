@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
     <div>
@@ -13,8 +14,27 @@
     <div>
         <h2>Manage Questions</h2>
         <h4>Get Question by ID</h4>
-        <input type="text" id="questionId" placeholder="Enter Question ID">
-        <button onClick="getQuestionsById(document.getElementById('questionId').value)">Get Question</button>        <button onClick="getQuestions()">View All Questions</button>
+        <input class="idInput" type="text" id="questionId" placeholder="Enter Question ID">
+        <button class="send-btn" onClick="getQuestionsById(document.getElementById('questionId').value)">Get Question</button>
+        <h4>View All Questions</h4>
+        <button class="send-btn" onClick="getQuestions()">View All Questions</button>
+        <h4>Add New Question</h4>
+        <input class="idInput" type="text" id="newQuestion" placeholder="Enter New Question">
+        <input type="file" id="newQuestionImage" accept="image/*">
+        <h4>Options </h4>
+        <input class="idInput" type="text" id="option1" placeholder="Option 1">
+        <input class="idInput" type="text" id="option2" placeholder="Option 2">
+        <input class="idInput" type="text" id="option3" placeholder="Option 3">
+        <input class="idInput" type="text" id="option4" placeholder="Option 4">
+        <h4>Correct Option</h4>
+        <input class="idInput" type="text" id="correctOption" placeholder="Enter Correct Option (1-4)">
+        <button class="send-btn" onClick="addQuestion()">Add Question</button>
+    </div>
+    <div>
+        <h4>Delete Question by ID</h4>
+        <input class="idInput" type="text" id="deleteQuestionId" placeholder="Enter Question ID">
+        <button class="send-btn" onClick="deleteQuestionById(document.getElementById('deleteQuestionId').value)">Delete Question</button>
+
     </div>
 
     <script src="lib/crud/crud.js"></script></body>
