@@ -63,7 +63,7 @@ async function addQuestion() {
   formData.append('pregunta', pregunta);
   formData.append('respostes', JSON.stringify(respostes));
   formData.append('correctOption', correctOption);
-  formData.append('imagen', imageFile); // must match upload.single('imagen')
+  formData.append('imagen', imageFile); 
 
   const res = await fetch('/question', {
     method: 'POST',
